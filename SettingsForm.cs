@@ -40,7 +40,7 @@ namespace NeraQemuLauncher
             try
             {
                 string sURL;
-                sURL = "https://0Nera.github.io/NeraQemuLauncher/Version.ini";
+                sURL = "https://0Nera.github.io/NeraQemuLauncher/last.ini";
                 WebRequest wrGETURL;
                 wrGETURL = WebRequest.Create(sURL);
                 WebProxy myProxy = new WebProxy("localhost", 80);
@@ -54,15 +54,56 @@ namespace NeraQemuLauncher
                 StreamReader objReader = new StreamReader(objStream);
 
                 string sLine = "";
+                string LastVersion = "1.0.0";
+                string LocalVersion = "1.0.0";
+                string InstallerURL = "https://0Nera.github.io/NeraQemuLauncher/installer.exe";
+                string FullResponse = "Last version: ";
                 int i = 0;
 
                 while (sLine != null)
                 {
                     i++;
-                    sLine = objReader.ReadToEnd();
+                    sLine = objReader.ReadLine();
+                    if (sLine != null)
+                    {
+                        if ( i == 1)
+                        {
+                            FullResponse = sLine;
+                            LastVersion = sLine;
+                        } else if (i == 2)
+                        {
+                            FullResponse += "\n[Info]\n" + sLine;
+                        } else if (i == 3)
+                        {
+                            InstallerURL = sLine;
+                        }
+                    }
+                        
                 }
-                Console.Write(sLine);
-                Console.ReadLine();
+                if (LocalVersion == LastVersion)
+                {
+                    MessageBox.Show(
+                        "You have last version",
+                        "Last version info",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information,
+                        MessageBoxDefaultButton.Button1,
+                        MessageBoxOptions.DefaultDesktopOnly);
+                } else
+                {
+                    DialogResult result = MessageBox.Show(
+                        "Install last version?",
+                        "New version avaible",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Information,
+                        MessageBoxDefaultButton.Button1,
+                        MessageBoxOptions.DefaultDesktopOnly);
+                    if (result == DialogResult.Yes)
+                    {
+                        System.Diagnostics.Process.Start(InstallerURL);
+                    }
+                }
+                
             } catch (Exception E) {
                 DialogResult result = MessageBox.Show(
                     "Send error log to developer?",
