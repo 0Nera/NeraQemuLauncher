@@ -11,11 +11,13 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography.X509Certificates;
 
 namespace NeraQemuLauncher
 {
     public partial class SettingsForm : Form
     {
+        
 
         public SettingsForm()
         {
@@ -42,15 +44,22 @@ namespace NeraQemuLauncher
             try
             {
                 string sURL= "https://0Nera.github.io/NeraQemuLauncher/last.ini";
-                int LastVersion = 100;
-                int LocalVersion = 100;
                 string InstallerURL = "https://0Nera.github.io/NeraQemuLauncher/installer.exe";
-                int i = 0;
+                const int LocalVersion = 100;
+                int LastVersion;
 
-                WebClient client = new WebClient();
-                client.DownloadFile(sURL, "last.ini");
-                INIManager manager = new INIManager("last.ini");
+
+                ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
+
+                using (var client = new WebClient())
+                {
+                    client.DownloadFile(new Uri(sURL), "last.ini");
+                }
+
+                INIManager manager = new INIManager(Path.GetFullPath("last.ini"));
+
                 LastVersion = int.Parse(manager.GetPrivateString("main", "version"));
+                InstallerURL = manager.GetPrivateString("main", "installer");
 
                 if (LocalVersion == LastVersion)
                 {
@@ -99,6 +108,10 @@ namespace NeraQemuLauncher
                 }
             }
             
+        }
+        public static bool AcceptAllCertificatePolicy(object sender, X509Certificate certificate, X509Chain chain, System.Net.Security.SslPolicyErrors sslPolicyErrors)
+        {
+            return true;
         }
     }
 }

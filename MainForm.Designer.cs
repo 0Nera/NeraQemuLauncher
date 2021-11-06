@@ -29,6 +29,7 @@ namespace NeraQemuLauncher
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.runToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.runQemu = new System.Windows.Forms.ToolStripMenuItem();
@@ -39,10 +40,10 @@ namespace NeraQemuLauncher
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.panel_left_menu = new System.Windows.Forms.Panel();
-            this.panel_footer = new System.Windows.Forms.Panel();
-            this.label_ram = new System.Windows.Forms.Label();
+            this.listBox_configs = new System.Windows.Forms.ListBox();
             this.panel_main = new System.Windows.Forms.Panel();
+            this.label_system = new System.Windows.Forms.Label();
+            this.comboBox_system = new System.Windows.Forms.ComboBox();
             this.label_args = new System.Windows.Forms.Label();
             this.textBox_args = new System.Windows.Forms.TextBox();
             this.textBox_ram = new System.Windows.Forms.TextBox();
@@ -51,12 +52,8 @@ namespace NeraQemuLauncher
             this.label_cdrom = new System.Windows.Forms.Label();
             this.label_name = new System.Windows.Forms.Label();
             this.textBox_name = new System.Windows.Forms.TextBox();
-            this.comboBox_system = new System.Windows.Forms.ComboBox();
-            this.label_system = new System.Windows.Forms.Label();
-            this.listBox_configs = new System.Windows.Forms.ListBox();
+            this.splitter1 = new System.Windows.Forms.Splitter();
             this.menuStrip.SuspendLayout();
-            this.panel_left_menu.SuspendLayout();
-            this.panel_footer.SuspendLayout();
             this.panel_main.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -100,21 +97,23 @@ namespace NeraQemuLauncher
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // onlineHelpToolStripMenuItem
             // 
             this.onlineHelpToolStripMenuItem.Name = "onlineHelpToolStripMenuItem";
-            this.onlineHelpToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.onlineHelpToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.onlineHelpToolStripMenuItem.Text = "Online help";
+            this.onlineHelpToolStripMenuItem.Click += new System.EventHandler(this.onlineHelpToolStripMenuItem_Click);
             // 
             // offlineHelpToolStripMenuItem
             // 
             this.offlineHelpToolStripMenuItem.Name = "offlineHelpToolStripMenuItem";
-            this.offlineHelpToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.offlineHelpToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.offlineHelpToolStripMenuItem.Text = "Offline help";
+            this.offlineHelpToolStripMenuItem.Click += new System.EventHandler(this.offlineHelpToolStripMenuItem_Click);
             // 
             // settingsToolStripMenuItem
             // 
@@ -127,32 +126,15 @@ namespace NeraQemuLauncher
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // panel_left_menu
+            // listBox_configs
             // 
-            this.panel_left_menu.Controls.Add(this.listBox_configs);
-            this.panel_left_menu.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel_left_menu.Location = new System.Drawing.Point(0, 24);
-            this.panel_left_menu.Name = "panel_left_menu";
-            this.panel_left_menu.Size = new System.Drawing.Size(125, 489);
-            this.panel_left_menu.TabIndex = 1;
-            // 
-            // panel_footer
-            // 
-            this.panel_footer.Controls.Add(this.label_ram);
-            this.panel_footer.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel_footer.Location = new System.Drawing.Point(125, 483);
-            this.panel_footer.Name = "panel_footer";
-            this.panel_footer.Size = new System.Drawing.Size(676, 30);
-            this.panel_footer.TabIndex = 2;
-            // 
-            // label_ram
-            // 
-            this.label_ram.AutoSize = true;
-            this.label_ram.Location = new System.Drawing.Point(7, 7);
-            this.label_ram.Name = "label_ram";
-            this.label_ram.Size = new System.Drawing.Size(31, 13);
-            this.label_ram.TabIndex = 0;
-            this.label_ram.Text = "RAM";
+            this.listBox_configs.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listBox_configs.FormattingEnabled = true;
+            this.listBox_configs.Location = new System.Drawing.Point(0, 24);
+            this.listBox_configs.Name = "listBox_configs";
+            this.listBox_configs.Size = new System.Drawing.Size(100, 489);
+            this.listBox_configs.TabIndex = 0;
+            this.listBox_configs.SelectedIndexChanged += new System.EventHandler(this.listBox_configs_SelectedIndexChanged);
             // 
             // panel_main
             // 
@@ -166,11 +148,32 @@ namespace NeraQemuLauncher
             this.panel_main.Controls.Add(this.label_cdrom);
             this.panel_main.Controls.Add(this.label_name);
             this.panel_main.Controls.Add(this.textBox_name);
-            this.panel_main.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel_main.Location = new System.Drawing.Point(125, 24);
+            this.panel_main.Dock = System.Windows.Forms.DockStyle.Right;
+            this.panel_main.Location = new System.Drawing.Point(100, 24);
             this.panel_main.Name = "panel_main";
-            this.panel_main.Size = new System.Drawing.Size(676, 459);
+            this.panel_main.Size = new System.Drawing.Size(701, 489);
             this.panel_main.TabIndex = 3;
+            // 
+            // label_system
+            // 
+            this.label_system.AutoSize = true;
+            this.label_system.Location = new System.Drawing.Point(7, 113);
+            this.label_system.Name = "label_system";
+            this.label_system.Size = new System.Drawing.Size(41, 13);
+            this.label_system.TabIndex = 9;
+            this.label_system.Text = "System";
+            // 
+            // comboBox_system
+            // 
+            this.comboBox_system.DisplayMember = "0";
+            this.comboBox_system.FormattingEnabled = true;
+            this.comboBox_system.Location = new System.Drawing.Point(61, 110);
+            this.comboBox_system.Name = "comboBox_system";
+            this.comboBox_system.Size = new System.Drawing.Size(603, 21);
+            this.comboBox_system.TabIndex = 8;
+            this.comboBox_system.Text = "qemu-system-i386";
+            this.comboBox_system.ValueMember = "0";
+            this.comboBox_system.SelectedIndexChanged += new System.EventHandler(this.comboBox_system_SelectedIndexChanged);
             // 
             // label_args
             // 
@@ -194,7 +197,6 @@ namespace NeraQemuLauncher
             this.textBox_ram.Name = "textBox_ram";
             this.textBox_ram.Size = new System.Drawing.Size(603, 20);
             this.textBox_ram.TabIndex = 5;
-            this.textBox_ram.Text = "4";
             // 
             // label_memory
             // 
@@ -211,7 +213,6 @@ namespace NeraQemuLauncher
             this.textBox_CDROM.Name = "textBox_CDROM";
             this.textBox_CDROM.Size = new System.Drawing.Size(603, 20);
             this.textBox_CDROM.TabIndex = 3;
-            this.textBox_CDROM.Text = "SynapseOS.iso";
             // 
             // label_cdrom
             // 
@@ -237,37 +238,15 @@ namespace NeraQemuLauncher
             this.textBox_name.Name = "textBox_name";
             this.textBox_name.Size = new System.Drawing.Size(603, 20);
             this.textBox_name.TabIndex = 0;
-            this.textBox_name.Text = "SynapseOS";
             // 
-            // comboBox_system
+            // splitter1
             // 
-            this.comboBox_system.DisplayMember = "0";
-            this.comboBox_system.FormattingEnabled = true;
-            this.comboBox_system.Location = new System.Drawing.Point(61, 110);
-            this.comboBox_system.Name = "comboBox_system";
-            this.comboBox_system.Size = new System.Drawing.Size(603, 21);
-            this.comboBox_system.TabIndex = 8;
-            this.comboBox_system.Text = "qemu-system-i386";
-            this.comboBox_system.ValueMember = "0";
-            this.comboBox_system.SelectedIndexChanged += new System.EventHandler(this.comboBox_system_SelectedIndexChanged);
-            // 
-            // label_system
-            // 
-            this.label_system.AutoSize = true;
-            this.label_system.Location = new System.Drawing.Point(7, 113);
-            this.label_system.Name = "label_system";
-            this.label_system.Size = new System.Drawing.Size(41, 13);
-            this.label_system.TabIndex = 9;
-            this.label_system.Text = "System";
-            // 
-            // listBox_configs
-            // 
-            this.listBox_configs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listBox_configs.FormattingEnabled = true;
-            this.listBox_configs.Location = new System.Drawing.Point(0, 0);
-            this.listBox_configs.Name = "listBox_configs";
-            this.listBox_configs.Size = new System.Drawing.Size(125, 489);
-            this.listBox_configs.TabIndex = 0;
+            this.splitter1.Dock = System.Windows.Forms.DockStyle.Right;
+            this.splitter1.Location = new System.Drawing.Point(97, 24);
+            this.splitter1.Name = "splitter1";
+            this.splitter1.Size = new System.Drawing.Size(3, 489);
+            this.splitter1.TabIndex = 4;
+            this.splitter1.TabStop = false;
             // 
             // MainForm
             // 
@@ -277,11 +256,11 @@ namespace NeraQemuLauncher
             this.AutoScroll = true;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(801, 513);
+            this.Controls.Add(this.splitter1);
+            this.Controls.Add(this.listBox_configs);
             this.Controls.Add(this.panel_main);
-            this.Controls.Add(this.panel_footer);
-            this.Controls.Add(this.panel_left_menu);
             this.Controls.Add(this.menuStrip);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -289,9 +268,6 @@ namespace NeraQemuLauncher
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
-            this.panel_left_menu.ResumeLayout(false);
-            this.panel_footer.ResumeLayout(false);
-            this.panel_footer.PerformLayout();
             this.panel_main.ResumeLayout(false);
             this.panel_main.PerformLayout();
             this.ResumeLayout(false);
@@ -308,8 +284,6 @@ namespace NeraQemuLauncher
         private System.Windows.Forms.ToolStripMenuItem offlineHelpToolStripMenuItem;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
-        private System.Windows.Forms.Panel panel_left_menu;
-        private System.Windows.Forms.Panel panel_footer;
         private System.Windows.Forms.Panel panel_main;
         private System.Windows.Forms.ToolStripMenuItem runToolStripMenuItem;
         private System.Windows.Forms.TextBox textBox_name;
@@ -322,10 +296,10 @@ namespace NeraQemuLauncher
         private System.Windows.Forms.TextBox textBox_args;
         private System.Windows.Forms.Label label_args;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
-        private System.Windows.Forms.Label label_ram;
         private System.Windows.Forms.Label label_system;
         private System.Windows.Forms.ComboBox comboBox_system;
         private System.Windows.Forms.ListBox listBox_configs;
+        private System.Windows.Forms.Splitter splitter1;
     }
 }
 

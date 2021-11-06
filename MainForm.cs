@@ -21,7 +21,10 @@ namespace NeraQemuLauncher
         String cdroom = "SynapseOS.iso";
         String args = "";
 
+        string[] filePaths = Directory.GetFiles(Path.GetFullPath(Directory.GetCurrentDirectory() + "/Projects/"), "*.ini");
+
         int Memory = 512;
+
 
         public MainForm()
         {
@@ -30,7 +33,11 @@ namespace NeraQemuLauncher
 
         private void runQemuToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            cdroom = textBox_CDROM.Text;
+            if (HaveCD)
+            {
+                cdroom = textBox_CDROM.Text;
+            }
+            
             args = textBox_args.Text;
             Memory = int.Parse(textBox_ram.Text);
 
@@ -38,8 +45,8 @@ namespace NeraQemuLauncher
             System.Diagnostics.Process.Start(
                 "CMD.exe", 
                 string.Format(
-                    "/C echo new log>log.txt" + 
-                    " & {0} -m {1} -cdrom \"{2}\" -monitor stdio -serial file:log.txt" +
+                    "/C echo new log>log.txt" +
+                    " & {0} -m {1} -cdrom \".\\OS\\{2}\" -monitor stdio -serial file:log.txt" +
                     " {3} & pause", 
                     
                     QemuSystem, Memory, cdroom, args
@@ -69,7 +76,7 @@ namespace NeraQemuLauncher
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            listBox_configs.Items.Add("SynapseOS");
+            
             comboBox_system.Items.AddRange(new string[] { 
                 "qemu-system-arm", 
                 "qemu-system-armw",
@@ -78,12 +85,64 @@ namespace NeraQemuLauncher
                 "qemu-system-x86_64",
                 "qemu-system-x86_64w"
             });
-            label_ram.Text = "Total RAM: " + (new ComputerInfo().TotalPhysicalMemory / 1024 / 1024).ToString();
+            //label_ram.Text = "Total RAM: " + (new ComputerInfo().TotalPhysicalMemory / 1024 / 1024).ToString();
+
+            foreach (String n in filePaths)
+            {
+                listBox_configs.Items.Add(Path.GetFileName(n));
+            }
         }
 
         private void comboBox_system_SelectedIndexChanged(object sender, EventArgs e)
         {
             QemuSystem = comboBox_system.Text.ToString();
+        }
+
+        private void listBox_configs_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                INIManager manager = new INIManager(Path.GetFullPath("./Projects/"+listBox_configs.SelectedItem.ToString()));
+                textBox_name.Text = manager.GetPrivateString("main", "Name");
+                textBox_CDROM.Text = manager.GetPrivateString("main", "Cdroom");
+                textBox_ram.Text = manager.GetPrivateString("main", "RAM");
+                textBox_args.Text = manager.GetPrivateString("main", "Args");
+                comboBox_system.Text = manager.GetPrivateString("main", "System");
+            } catch
+            {
+
+            }
+            
+        }
+
+        private void onlineHelpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show(
+                "Open website?",
+                "Online help",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Information,
+                MessageBoxDefaultButton.Button1,
+                MessageBoxOptions.DefaultDesktopOnly);
+            if (result == DialogResult.Yes)
+            {
+                System.Diagnostics.Process.Start("https://0Nera.github.io/NeraQemuLauncher#Docs");
+            }
+        }
+
+        private void offlineHelpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show(
+                "Open PDF?",
+                "Offline help",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Information,
+                MessageBoxDefaultButton.Button1,
+                MessageBoxOptions.DefaultDesktopOnly);
+            if (result == DialogResult.Yes)
+            {
+                System.Diagnostics.Process.Start(Path.GetFullPath("./docs.html"));
+            }
         }
     }
 }
