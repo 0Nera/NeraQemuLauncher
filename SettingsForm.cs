@@ -10,11 +10,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace NeraQemuLauncher
 {
     public partial class SettingsForm : Form
     {
+
         public SettingsForm()
         {
             InitializeComponent();
@@ -39,32 +41,17 @@ namespace NeraQemuLauncher
         {
             try
             {
-                string sURL;
-                sURL = "https://0Nera.github.io/NeraQemuLauncher/last.ini";
-                WebRequest wrGETURL;
-                wrGETURL = WebRequest.Create(sURL);
-                WebProxy myProxy = new WebProxy("localhost", 80);
-                myProxy.BypassProxyOnLocal = true;
-
-                wrGETURL.Proxy = WebProxy.GetDefaultProxy();
-
-                Stream objStream;
-                objStream = wrGETURL.GetResponse().GetResponseStream();
-
-                StreamReader objReader = new StreamReader(objStream);
-
-                string sLine = "";
-                string LastVersion = "1.0.0";
-                string LocalVersion = "1.0.0";
+                string sURL= "https://0Nera.github.io/NeraQemuLauncher/last.ini";
+                int LastVersion = 100;
+                int LocalVersion = 100;
                 string InstallerURL = "https://0Nera.github.io/NeraQemuLauncher/installer.exe";
-                string FullResponse = "Last version: ";
                 int i = 0;
 
-                WebRequest reqGET = System.Net.WebRequest.Create(@"https://0Nera.github.io/NeraQemuLauncher/last.ini");
-                WebResponse resp = reqGET.GetResponse();
-                Stream stream = resp.GetResponseStream();
-                StreamReader sr = new System.IO.StreamReader(stream);
-                string s = sr.ReadToEnd();
+                WebClient client = new WebClient();
+                client.DownloadFile(sURL, "last.ini");
+                INIManager manager = new INIManager("last.ini");
+                LastVersion = int.Parse(manager.GetPrivateString("main", "version"));
+
                 if (LocalVersion == LastVersion)
                 {
                     MessageBox.Show(
