@@ -60,26 +60,11 @@ namespace NeraQemuLauncher
                 string FullResponse = "Last version: ";
                 int i = 0;
 
-                while (sLine != null)
-                {
-                    i++;
-                    sLine = objReader.ReadLine();
-                    if (sLine != null)
-                    {
-                        if ( i == 1)
-                        {
-                            FullResponse = sLine;
-                            LastVersion = sLine;
-                        } else if (i == 2)
-                        {
-                            FullResponse += "\n[Info]\n" + sLine;
-                        } else if (i == 3)
-                        {
-                            InstallerURL = sLine;
-                        }
-                    }
-                        
-                }
+                WebRequest reqGET = System.Net.WebRequest.Create(@"https://0Nera.github.io/NeraQemuLauncher/last.ini");
+                WebResponse resp = reqGET.GetResponse();
+                Stream stream = resp.GetResponseStream();
+                StreamReader sr = new System.IO.StreamReader(stream);
+                string s = sr.ReadToEnd();
                 if (LocalVersion == LastVersion)
                 {
                     MessageBox.Show(

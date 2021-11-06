@@ -16,9 +16,11 @@ namespace NeraQemuLauncher
     public partial class MainForm : Form
     {
         Boolean HaveCD = true;
+
         String QemuSystem = "qemu-system-i386";
         String cdroom = "SynapseOS.iso";
         String args = "";
+
         int Memory = 512;
 
         public MainForm()
@@ -30,10 +32,13 @@ namespace NeraQemuLauncher
         {
             cdroom = textBox_CDROM.Text;
             args = textBox_args.Text;
+            Memory = int.Parse(textBox_ram.Text);
+
+
             System.Diagnostics.Process.Start(
                 "CMD.exe", 
                 string.Format(
-                    "/C {0} -m {1} -cdrom \"{2}\" -monitor stdio -serial file:log.txt {3} & pause", 
+                    "/C echo new log>log.txt & {0} -m {1} -cdrom \"{2}\" -monitor stdio -serial file:log.txt {3} & pause", 
                     QemuSystem, Memory, cdroom, args
                     ));
         }
@@ -61,7 +66,21 @@ namespace NeraQemuLauncher
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            listBox_configs.Items.Add("SynapseOS");
+            comboBox_system.Items.AddRange(new string[] { 
+                "qemu-system-arm", 
+                "qemu-system-armw",
+                "qemu-system-i386",
+                "qemu-system-i386w",
+                "qemu-system-x86_64",
+                "qemu-system-x86_64w"
+            });
             label_ram.Text = "Total RAM: " + (new ComputerInfo().TotalPhysicalMemory / 1024 / 1024).ToString();
+        }
+
+        private void comboBox_system_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            QemuSystem = comboBox_system.Text.ToString();
         }
     }
 }

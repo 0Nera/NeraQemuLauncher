@@ -40,8 +40,8 @@ namespace NeraQemuLauncher
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.panel_left_menu = new System.Windows.Forms.Panel();
-            this.listView1 = new System.Windows.Forms.ListView();
             this.panel_footer = new System.Windows.Forms.Panel();
+            this.label_ram = new System.Windows.Forms.Label();
             this.panel_main = new System.Windows.Forms.Panel();
             this.label_args = new System.Windows.Forms.Label();
             this.textBox_args = new System.Windows.Forms.TextBox();
@@ -51,7 +51,9 @@ namespace NeraQemuLauncher
             this.label_cdrom = new System.Windows.Forms.Label();
             this.label_name = new System.Windows.Forms.Label();
             this.textBox_name = new System.Windows.Forms.TextBox();
-            this.label_ram = new System.Windows.Forms.Label();
+            this.comboBox_system = new System.Windows.Forms.ComboBox();
+            this.label_system = new System.Windows.Forms.Label();
+            this.listBox_configs = new System.Windows.Forms.ListBox();
             this.menuStrip.SuspendLayout();
             this.panel_left_menu.SuspendLayout();
             this.panel_footer.SuspendLayout();
@@ -127,22 +129,12 @@ namespace NeraQemuLauncher
             // 
             // panel_left_menu
             // 
-            this.panel_left_menu.Controls.Add(this.listView1);
+            this.panel_left_menu.Controls.Add(this.listBox_configs);
             this.panel_left_menu.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel_left_menu.Location = new System.Drawing.Point(0, 24);
             this.panel_left_menu.Name = "panel_left_menu";
             this.panel_left_menu.Size = new System.Drawing.Size(125, 489);
             this.panel_left_menu.TabIndex = 1;
-            // 
-            // listView1
-            // 
-            this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listView1.HideSelection = false;
-            this.listView1.Location = new System.Drawing.Point(0, 0);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(125, 489);
-            this.listView1.TabIndex = 0;
-            this.listView1.UseCompatibleStateImageBehavior = false;
             // 
             // panel_footer
             // 
@@ -153,8 +145,19 @@ namespace NeraQemuLauncher
             this.panel_footer.Size = new System.Drawing.Size(676, 30);
             this.panel_footer.TabIndex = 2;
             // 
+            // label_ram
+            // 
+            this.label_ram.AutoSize = true;
+            this.label_ram.Location = new System.Drawing.Point(7, 7);
+            this.label_ram.Name = "label_ram";
+            this.label_ram.Size = new System.Drawing.Size(31, 13);
+            this.label_ram.TabIndex = 0;
+            this.label_ram.Text = "RAM";
+            // 
             // panel_main
             // 
+            this.panel_main.Controls.Add(this.label_system);
+            this.panel_main.Controls.Add(this.comboBox_system);
             this.panel_main.Controls.Add(this.label_args);
             this.panel_main.Controls.Add(this.textBox_args);
             this.panel_main.Controls.Add(this.textBox_ram);
@@ -236,14 +239,35 @@ namespace NeraQemuLauncher
             this.textBox_name.TabIndex = 0;
             this.textBox_name.Text = "SynapseOS";
             // 
-            // label_ram
+            // comboBox_system
             // 
-            this.label_ram.AutoSize = true;
-            this.label_ram.Location = new System.Drawing.Point(7, 7);
-            this.label_ram.Name = "label_ram";
-            this.label_ram.Size = new System.Drawing.Size(31, 13);
-            this.label_ram.TabIndex = 0;
-            this.label_ram.Text = "RAM";
+            this.comboBox_system.DisplayMember = "0";
+            this.comboBox_system.FormattingEnabled = true;
+            this.comboBox_system.Location = new System.Drawing.Point(61, 110);
+            this.comboBox_system.Name = "comboBox_system";
+            this.comboBox_system.Size = new System.Drawing.Size(603, 21);
+            this.comboBox_system.TabIndex = 8;
+            this.comboBox_system.Text = "qemu-system-i386";
+            this.comboBox_system.ValueMember = "0";
+            this.comboBox_system.SelectedIndexChanged += new System.EventHandler(this.comboBox_system_SelectedIndexChanged);
+            // 
+            // label_system
+            // 
+            this.label_system.AutoSize = true;
+            this.label_system.Location = new System.Drawing.Point(7, 113);
+            this.label_system.Name = "label_system";
+            this.label_system.Size = new System.Drawing.Size(41, 13);
+            this.label_system.TabIndex = 9;
+            this.label_system.Text = "System";
+            // 
+            // listBox_configs
+            // 
+            this.listBox_configs.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listBox_configs.FormattingEnabled = true;
+            this.listBox_configs.Location = new System.Drawing.Point(0, 0);
+            this.listBox_configs.Name = "listBox_configs";
+            this.listBox_configs.Size = new System.Drawing.Size(125, 489);
+            this.listBox_configs.TabIndex = 0;
             // 
             // MainForm
             // 
@@ -289,7 +313,6 @@ namespace NeraQemuLauncher
         private System.Windows.Forms.Panel panel_main;
         private System.Windows.Forms.ToolStripMenuItem runToolStripMenuItem;
         private System.Windows.Forms.TextBox textBox_name;
-        private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.ToolStripMenuItem runQemu;
         private System.Windows.Forms.Label label_name;
         private System.Windows.Forms.Label label_cdrom;
@@ -300,6 +323,9 @@ namespace NeraQemuLauncher
         private System.Windows.Forms.Label label_args;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private System.Windows.Forms.Label label_ram;
+        private System.Windows.Forms.Label label_system;
+        private System.Windows.Forms.ComboBox comboBox_system;
+        private System.Windows.Forms.ListBox listBox_configs;
     }
 }
 
