@@ -38,7 +38,10 @@ namespace NeraQemuLauncher
             System.Diagnostics.Process.Start(
                 "CMD.exe", 
                 string.Format(
-                    "/C echo new log>log.txt & {0} -m {1} -cdrom \"{2}\" -monitor stdio -serial file:log.txt {3} & pause", 
+                    "/C echo new log>log.txt" + 
+                    " & {0} -m {1} -cdrom \"{2}\" -monitor stdio -serial file:log.txt" +
+                    " {3} & pause", 
+                    
                     QemuSystem, Memory, cdroom, args
                     ));
         }
